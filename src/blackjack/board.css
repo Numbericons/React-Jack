@@ -20,8 +20,19 @@
   margin-bottom: 6vh;
 }
 
-.card{
+.card-show{
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
+  margin: 0px 0px 0px 5px;
+  border-radius: 7px;
+  width: 72px;
+  height: 106px;
+}
+
+.card-hide{
+  background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/cardback_red_acorn2.jpg");
+  background-position-x: -2px;
+  background-position-y: -4px;
+  background-size: 75px 112px;
   margin: 0px 0px 0px 5px;
   border-radius: 7px;
   width: 72px;

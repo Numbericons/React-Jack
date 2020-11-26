@@ -25,8 +25,8 @@ export default function Player(props) {
   return (
     <div className='hand'>
       <div className='hand-cards'>
-        <div className='card' style={card1}></div>
-        <div className='card' style={card2}></div>
+        <div className='card-show' style={card1}></div>
+        <div className='card-show' style={card2}></div>
       </div>
       <div className='hand-val'>
         <div className='hand-val-txt'>Flopped: </div>

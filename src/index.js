@@ -4,8 +4,6 @@ import './index.css';
 import Table from './blackjack/table';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(<Table />, document.getElementById('root'));
-
 ReactDOM.render(
   <React.StrictMode>
     <Table />
