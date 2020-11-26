@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Table from './blackjack/table';
 import reportWebVitals from './reportWebVitals';
+
+ReactDOM.render(<Table />, document.getElementById('root'));
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Table />
   </React.StrictMode>,
   document.getElementById('root')
 );
