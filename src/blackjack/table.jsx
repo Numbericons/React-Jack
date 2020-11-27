@@ -12,6 +12,7 @@ export default class Table extends React.Component {
     }
     this.dealCards();
     this.newHand = this.newHand.bind(this);
+    this.currentPlayer = this.playerCards.length - 1;
   }
 
   newDeck(){
@@ -25,7 +26,11 @@ export default class Table extends React.Component {
     for(let k=0; k < 3; k++) { arr[k].push(this.state.deck.draw()) };
     this.playerCards = arr;
   }
-  
+
+  hitPlayer(){
+    this.playersCards[this.currentPlayer].push(this.state.deck.draw());
+  } 
+
   dealCards(){
     this.playerArr();
     this.dealBoard();
@@ -102,6 +107,7 @@ export default class Table extends React.Component {
           {players}
         </div>
         <div className="new">
+          <button className="btn-hit" onClick={this.hitPlayer}>Hit</button>
           <button className="new-btn" onClick={this.newHand}>NEW HAND</button>
         </div>
       </div>
