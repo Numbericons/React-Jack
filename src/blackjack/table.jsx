@@ -7,32 +7,41 @@ import './board.css';
 export default class Table extends React.Component {
   constructor(props){
     super(props);
+    this.newHand();
+    this.state = {};
+    // let deck = new Deck();
+    // let boardArr = this.dealBoard(deck);
+    // let playerArr = this.playerArr(deck);
 
+    // this.state = {
+    //   deck: deck,
+    //   boardCards: boardArr,
+    //   playerCards: playerArr,
+    //   currentPlayer: playerArr.length - 1
+    // }
+
+    this.hitPlayer = this.hitPlayer.bind(this);
+    this.newHand = this.newHand.bind(this);
+  }
+
+  newHand(){
     let deck = new Deck();
-    let boardArr = this.dealBoard(deck);
-    let playerArr = this.playerArr(deck);
-
-    this.state = {
+    const boardArr = this.dealBoard(deck);
+    const playerArr = this.playerArr(deck);
+    
+    this.setState({
       deck: deck,
       boardCards: boardArr,
       playerCards: playerArr,
       currentPlayer: playerArr.length - 1
-    }
-
-    this.hitPlayer = this.hitPlayer.bind(this);
-    this.newHand = this.newHand.bind(this);
-    this.refreshPage = this.refreshPage.bind(this);
-  }
-
-  newDeck(){
-    this.setState({ deck: new Deck() });
+    })
   }
 
   playerArr(deck){
     let arr = [];
-    for(let i=0; i < 3; i++) { arr.push([]) };
-    for(let j=0; j < 3; j++) { arr[j].push(deck.draw()) };
-    for(let k=0; k < 3; k++) { arr[k].push(deck.draw()) };
+    for(let i=0; i < 1; i++) { arr.push([]) };
+    for(let j=0; j < 1; j++) { arr[j].push(deck.draw()) };
+    for(let k=0; k < 1; k++) { arr[k].push(deck.draw()) };
     return arr;
   }
 
@@ -51,21 +60,12 @@ export default class Table extends React.Component {
     arr.push(deck.draw(true))
 
     return arr;
-    // this.setState({boardCards: arr});
   }
 
   showBoard(){
     return this.state.boardCards.map((card, i) => (
       <Board key={`board${i}`} card={card}></Board>
     ));
-  }
-  
-  newHand(){
-    this.newDeck();
-    this.dealCards();
-    this.showBoard();
-    this.showPlayers();
-    this.setState({reset: true});
   }
 
   cardVal(card) {
@@ -98,10 +98,6 @@ export default class Table extends React.Component {
     return playerArr;
   }
 
-  refreshPage(){
-    this.setState({deck: true});
-  }
-
   render(){
     let players, board;
     if (this.state.playerCards) players = this.showPlayers();
@@ -118,9 +114,10 @@ export default class Table extends React.Component {
         <div className="players">
           {players}
         </div>
+        {/* <div className="buttons"></div> */}
         <div className="new">
           <button className="btn-hit" onClick={this.hitPlayer}>HIT</button>
-          <button className="new-btn" onClick={this.newHand}>NEW HAND</button>
+          <button className="new-btn" onClick={this.newHand}>NEW GAME</button>
         </div>
       </div>
     )
