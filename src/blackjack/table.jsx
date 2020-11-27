@@ -2,7 +2,7 @@ import React from 'react';
 import Deck from './deck';
 import Player from './player';
 import Board from './board';
-import './board.css';
+import '../stylesheets/board.css';
 
 export default class Table extends React.Component {
   constructor(props){
@@ -98,10 +98,24 @@ export default class Table extends React.Component {
     return playerArr;
   }
 
+  newOrButton(players) {
+    if (players) return (
+      <div className="buttons">
+        <button className="btn-hit" onClick={this.hitPlayer}>HIT</button>
+      </div>
+    )
+    return (
+      <div className="new">
+        <button className="new-btn" onClick={this.newHand}>NEW GAME</button>
+      </div>
+    )
+  }
+
   render(){
     let players, board;
     if (this.state.playerCards) players = this.showPlayers();
     if (this.state.boardCards) board = this.showBoard();
+    const btnInterface = this.newOrButton(players);
 
     return (
       <div className="table">
@@ -114,11 +128,7 @@ export default class Table extends React.Component {
         <div className="players">
           {players}
         </div>
-        {/* <div className="buttons"></div> */}
-        <div className="new">
-          <button className="btn-hit" onClick={this.hitPlayer}>HIT</button>
-          <button className="new-btn" onClick={this.newHand}>NEW GAME</button>
-        </div>
+        {btnInterface}
       </div>
     )
   }

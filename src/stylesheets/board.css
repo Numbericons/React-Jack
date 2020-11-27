@@ -73,10 +73,30 @@
   margin-top: 4vh;
 }
 
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 4vh;
+}
+
 .new-btn{
   width: 14vw;
   height: 6vh;
-  font-size: 24px;
+  font-size: 4vh;
+  font-family: Open sans-serif;
+  font-weight: 700;
+  margin-top: 14.5vh;
+  color: #FF5555;
+  background-color: black;
+  border: black;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-hit{
+  width: 14vw;
+  height: 6vh;
+  font-size: 4vh;
   font-family: Open sans-serif;
   font-weight: 700;
   color: #FF5555;
