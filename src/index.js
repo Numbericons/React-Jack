@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+// import './index.css';
+import './stylesheets/input.scss';
 import Table from './blackjack/table';
 import reportWebVitals from './reportWebVitals';
 

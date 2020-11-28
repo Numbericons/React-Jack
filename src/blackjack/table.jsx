@@ -2,23 +2,13 @@ import React from 'react';
 import Deck from './deck';
 import Player from './player';
 import Board from './board';
-import '../stylesheets/board.css';
+// import '../stylesheets/board.css';
 
 export default class Table extends React.Component {
   constructor(props){
     super(props);
     this.newHand();
     this.state = {};
-    // let deck = new Deck();
-    // let boardArr = this.dealBoard(deck);
-    // let playerArr = this.playerArr(deck);
-
-    // this.state = {
-    //   deck: deck,
-    //   boardCards: boardArr,
-    //   playerCards: playerArr,
-    //   currentPlayer: playerArr.length - 1
-    // }
 
     this.hitPlayer = this.hitPlayer.bind(this);
     this.newHand = this.newHand.bind(this);
@@ -118,17 +108,19 @@ export default class Table extends React.Component {
     const btnInterface = this.newOrButton(players);
 
     return (
-      <div className="table">
-        <div className="table-head">
-          <h1 className="table-head-title">React Jack</h1>
-          <div className='board'>
-            {board}
+      <div className="border">
+        <div className="table">
+          <div className="table-head">
+            <h1 className="table-head-title">React Jack</h1>
+            <div className='board'>
+              {board}
+            </div>
           </div>
+          <div className="players">
+            {players}
+          </div>
+          {btnInterface}
         </div>
-        <div className="players">
-          {players}
-        </div>
-        {btnInterface}
       </div>
     )
   }
