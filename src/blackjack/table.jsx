@@ -136,8 +136,8 @@ export default class Table extends React.Component {
     return playerArr;
   }
 
-  playBtns() {
-    if (this.state.resolve) {
+  playBtns(players) {
+    if (this.state.resolve || players[this.state.currentPlayer].props.total > 20) {
       return (
         <div className="reset">
           <button className="btn" onClick={this.newHand}>NEW GAME</button>
@@ -155,7 +155,7 @@ export default class Table extends React.Component {
   }
 
   btnInterface(players) {
-    if (players) return this.playBtns();
+    if (players) return this.playBtns(players);
     return (
       <div className="new">
         <button className="new-btn" onClick={this.newHand}>NEW GAME</button>
