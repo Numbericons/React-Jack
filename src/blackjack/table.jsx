@@ -2,7 +2,6 @@ import React from 'react';
 import Deck from './deck';
 import Player from './player';
 import Dealer from './dealer';
-import Board from './board';
 
 export default class Table extends React.Component {
   constructor(props){
@@ -65,10 +64,11 @@ export default class Table extends React.Component {
   showTotal(){
     this.setState({showTotal: true});
   }
-
+  
   stand(){
     this.revealHand();
     this.showTotal();
+    this.resolveHand();
     this.setState({resolve: true});
   }
   
@@ -78,15 +78,6 @@ export default class Table extends React.Component {
     arr.push(deck.draw(true))
 
     return arr;
-  }
-
-  showBoard(){
-    const cards = this.state.boardCards;
-    const handTotal = this.handTotal(cards);
-
-    return (
-      <Dealer cards={cards} total={handTotal} revealed={this.state.showTotal}></Dealer>
-    )
   }
 
   cardVal(card) {
@@ -108,6 +99,31 @@ export default class Table extends React.Component {
     if (aces > 0 && total <= 11) total += 10; 
 
     return total;
+  }
+
+  hasAce(cards) {
+    return cards.some(card => card.rank === "A");
+  }
+
+  resolveHand() {
+    let cards = this.state.boardCards;
+    let total = this.handTotal(cards)
+    let ace = this.hasAce(cards);
+
+    while (total < 17 || total === 17 && ace) {
+      const card = this.state.deck.draw(true);
+      cards.push(card);
+      total = this.handTotal(cards);
+      if (card.rank === "A") ace = true;
+    }
+
+    this.setState({boardCards: cards});
+  }
+
+  showBoard() {
+    const cards = this.state.boardCards;
+    const handTotal = this.handTotal(cards);
+    return <Dealer cards={cards} total={handTotal} revealed={this.state.showTotal}></Dealer>;
   }
 
   showPlayers(){
