@@ -23,6 +23,7 @@ export default function Board(props) {
   return (
     <div>
       <div className='card-show' style={card1}></div>
+      {/* <div className='hand-val-txt'>{props.total}{showBust}</div> */}
     </div>
   )
 }

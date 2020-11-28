@@ -1,6 +1,7 @@
 import React from 'react';
 import Deck from './deck';
 import Player from './player';
+import Dealer from './dealer';
 import Board from './board';
 
 export default class Table extends React.Component {
@@ -25,6 +26,8 @@ export default class Table extends React.Component {
       boardCards: boardArr,
       playerCards: playerArr,
       stacks: stacks,
+      showTotal: false,
+      resolve: false,
       currentPlayer: playerArr.length - 1
     })
   }
@@ -32,8 +35,8 @@ export default class Table extends React.Component {
   playerArr(deck){
     let arr = [];
     for(let i=0; i < 1; i++) { arr.push([]) };
-    for(let j=0; j < 1; j++) { arr[j].push(deck.draw()) };
-    for(let k=0; k < 1; k++) { arr[k].push(deck.draw()) };
+    for(let j=0; j < 1; j++) { arr[j].push(deck.draw(true)) };
+    for(let k=0; k < 1; k++) { arr[k].push(deck.draw(true)) };
     return arr;
   }
 
@@ -48,13 +51,25 @@ export default class Table extends React.Component {
     if (!this.state.playerCards) return;
     
     const arr = this.state.playerCards;
-    arr[this.state.currentPlayer].push(this.state.deck.draw());
+    arr[this.state.currentPlayer].push(this.state.deck.draw(true));
 
     this.setState({ playersCards: arr});
   }
 
-  stand(){
+  revealHand(){
+    let board = this.state.boardCards;
+    board[0].revealed = true;
+    this.setState({boardCards: board});
+  }
 
+  showTotal(){
+    this.setState({showTotal: true});
+  }
+
+  stand(){
+    this.revealHand();
+    this.showTotal();
+    this.setState({resolve: true});
   }
   
   dealBoard(deck){
@@ -66,9 +81,12 @@ export default class Table extends React.Component {
   }
 
   showBoard(){
-    return this.state.boardCards.map((card, i) => (
-      <Board key={`board${i}`} card={card}></Board>
-    ));
+    const cards = this.state.boardCards;
+    const handTotal = this.handTotal(cards);
+
+    return (
+      <Dealer cards={cards} total={handTotal} revealed={this.state.showTotal}></Dealer>
+    )
   }
 
   cardVal(card) {
@@ -102,14 +120,26 @@ export default class Table extends React.Component {
     return playerArr;
   }
 
-  newOrButton(players) {
-    if (players) return (
-      <div className="buttons">
-        <button className="btn-hit" onClick={this.hitPlayer}>HIT</button>
-        <button className="btn-hit" onClick={this.stand}>STAND</button>
-        <button className="new-btn" onClick={this.newHand}>NEW GAME</button>
-      </div>
-    )
+  playBtns() {
+    if (this.state.resolve) {
+      return (
+        <div className="reset">
+          <button className="btn" onClick={this.newHand}>NEW GAME</button>
+        </div>
+      )
+    } else {
+      return (
+        <div className="buttons">
+          <button className="btn" onClick={this.hitPlayer}>HIT</button>
+          <button className="btn" onClick={this.stand}>STAND</button>
+          <button className="btn" onClick={this.newHand}>NEW GAME</button>
+        </div>
+      )
+    }
+  }
+
+  btnInterface(players) {
+    if (players) return this.playBtns();
     return (
       <div className="new">
         <button className="new-btn" onClick={this.newHand}>NEW GAME</button>
@@ -121,7 +151,7 @@ export default class Table extends React.Component {
     let players, board;
     if (this.state.playerCards) players = this.showPlayers();
     if (this.state.boardCards) board = this.showBoard();
-    const btnInterface = this.newOrButton(players);
+    const buttonInt = this.btnInterface(players);
 
     return (
       <div className="border">
@@ -135,7 +165,7 @@ export default class Table extends React.Component {
           <div className="players">
             {players}
           </div>
-          {btnInterface}
+          {buttonInt}
         </div>
       </div>
     )
