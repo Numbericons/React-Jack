@@ -2,7 +2,6 @@ import React from 'react';
 import Deck from './deck';
 import Player from './player';
 import Board from './board';
-// import '../stylesheets/board.css';
 
 export default class Table extends React.Component {
   constructor(props){
@@ -11,6 +10,7 @@ export default class Table extends React.Component {
     this.state = {};
 
     this.hitPlayer = this.hitPlayer.bind(this);
+    this.stand = this.stand.bind(this);
     this.newHand = this.newHand.bind(this);
   }
 
@@ -18,11 +18,13 @@ export default class Table extends React.Component {
     let deck = new Deck();
     const boardArr = this.dealBoard(deck);
     const playerArr = this.playerArr(deck);
+    const stacks = this.playerStacks();
     
     this.setState({
       deck: deck,
       boardCards: boardArr,
       playerCards: playerArr,
+      stacks: stacks,
       currentPlayer: playerArr.length - 1
     })
   }
@@ -35,6 +37,13 @@ export default class Table extends React.Component {
     return arr;
   }
 
+  playerStacks(){
+    let arr = [];
+    for (let i = 0; i < 1; i++) { arr.push([]) };
+    for (let j = 0; j < 1; j++) { arr[j].push(1000) };
+    return arr;
+  }
+
   hitPlayer(){
     if (!this.state.playerCards) return;
     
@@ -42,6 +51,10 @@ export default class Table extends React.Component {
     arr[this.state.currentPlayer].push(this.state.deck.draw());
 
     this.setState({ playersCards: arr});
+  }
+
+  stand(){
+
   }
   
   dealBoard(deck){
@@ -80,10 +93,11 @@ export default class Table extends React.Component {
   }
 
   showPlayers(){
+    const stacks = this.state.stacks;
     let playerArr = this.state.playerCards.map((cards, i) => {
       const handTotal = this.handTotal(cards);
       
-      return <Player key={`player${i}`} cards={cards} board={this.boardCards} total={handTotal}></Player>;
+      return <Player key={`player${i}`} cards={cards} board={this.boardCards} total={handTotal} stack={stacks[i]}></Player>;
     });
     return playerArr;
   }
@@ -92,6 +106,8 @@ export default class Table extends React.Component {
     if (players) return (
       <div className="buttons">
         <button className="btn-hit" onClick={this.hitPlayer}>HIT</button>
+        <button className="btn-hit" onClick={this.stand}>STAND</button>
+        <button className="new-btn" onClick={this.newHand}>NEW GAME</button>
       </div>
     )
     return (

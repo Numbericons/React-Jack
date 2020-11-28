@@ -70,28 +70,6 @@ table {
   font-family: Open sans-serif;
 }
 
-.border {
-  background-color: #1c1200;
-  background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
-}
-
-.table {
-  height: 100vh;
-  background-image: linear-gradient(limegreen, #34600c);
-  border-radius: 200px;
-}
-
-.table-head {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.table-head-title {
-  font-size: 40px;
-  font-family: Open sans-serif;
-}
-
 .board {
   display: flex;
   margin-bottom: 6vh;
@@ -129,6 +107,7 @@ table {
 .hand-val {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .hand-val-txt {
@@ -142,45 +121,6 @@ table {
   width: 100vw;
   display: flex;
   flex-wrap: wrap;
-}
-
-.new {
-  display: flex;
-  justify-content: center;
-  margin-top: 4vh;
-}
-
-.buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 4vh;
-}
-
-.new-btn {
-  width: 14vw;
-  height: 6vh;
-  font-size: 4vh;
-  font-family: Open sans-serif;
-  font-weight: 700;
-  margin-top: 14.5vh;
-  color: #FF5555;
-  background-color: black;
-  border: black;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.btn-hit {
-  width: 14vw;
-  height: 6vh;
-  font-size: 4vh;
-  font-family: Open sans-serif;
-  font-weight: 700;
-  color: #FF5555;
-  background-color: black;
-  border: black;
-  border-radius: 10px;
-  cursor: pointer;
 }
 
 .new {

@@ -26,6 +26,7 @@ export default function Player(props) {
       </div>
       <div className='hand-val'>
         <div className='hand-val-txt'>{props.total}{showBust}</div>
+        <div className='hand-val-txt'>Stack: ${props.stack}</div>
       </div>
     </div>
   )
