@@ -3,6 +3,10 @@ export default class Calc {
   constructor() {
   }
 
+  static hasAce(cards) {
+    return cards.some(card=> card.rank = "A");
+  }
+
   static handTotal(cards) {
     let total = 0;
     let aces = 0;
@@ -24,5 +28,11 @@ export default class Calc {
     if (card.rank === "A") return 1;
   }
 
-  static hello() {console.log('hello world')};
+  static strVal(str) {
+    const tens = ["T", "J", "Q", "K"];
+
+    if (str === "A") return 11;
+    if (tens.includes(str)) return 10;
+    return parseInt(str);
+  }
 }
