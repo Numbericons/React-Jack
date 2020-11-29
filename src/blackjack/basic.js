@@ -49,7 +49,7 @@ export default class Basic {
     return "hold"
   }
 
-  actionPair(total, upcard, upVal){
+  actionPair(total, upVal){
     if (this.cards[0].rank === "A") return "split";
     if (total === 20) return "hold";
     if (total === 18) {
@@ -67,7 +67,7 @@ export default class Basic {
     if (total === 6 || total === 4) return this.splitOrHold(7, upVal);
   }
 
-  actionAce(upcard, upVal){
+  actionAce(total){
     if (total === 20) return "stand";
     if (total === 19) return this.doubleOrAct(6, 7, "stand")
     if (total === 18) return this.doubleOrAct(2, 7, "stand");
@@ -76,7 +76,7 @@ export default class Basic {
     if (total === 14 || total === 13) return this.doubleOrAct(5, 7, "hit");
   }
 
-  actionElse(upVal){
+  actionElse(total, upVal){
     if (total > 16) return "stand";
     if (total > 12) return this.overEleven(upVal)
     if (total === 11 && this.firstAct) return "double";
@@ -84,10 +84,10 @@ export default class Basic {
     if (total <= 8) return "hit";
   }
 
-  nextAction(total, ace, pair){
-    if (pair) return this.actionPair(total);
+  nextAction(total, ace, pair, upVal){
+    if (pair) return this.actionPair(total, upVal);
     if (ace) return this.actionAce(total);
 
-    return this.actionElse(total);
+    return this.actionElse(total, upVal);
   }
 }
