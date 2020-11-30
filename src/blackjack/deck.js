@@ -32,6 +32,7 @@ export default class Deck {
       this.cards = this.shuffle(this.cards);
     }
     this.cards_drawn += 1;
+    if (!this.cards[this.cards.length - 1]) debugger;
     this.cards[this.cards.length - 1].revealed = revealed;
     return this.cards.pop();
   }

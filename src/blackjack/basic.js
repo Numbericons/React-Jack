@@ -11,12 +11,12 @@ export default class Basic {
     const total = Calc.handTotal(this.cards);
     const ace = Calc.hasAce(this.cards);
     const pair = Calc.isPair(this.cards);
-    const upVal = Calc.strVal(card);
+    const upVal = Calc.strVal(upcard);
 
     return this.nextAction(total,ace,pair, upVal);
   }
 
-  overEleven() {
+  overEleven(total, upVal) {
     if (total === 12) {
       if (upVal > 3 && upVal < 7) return "stand";
       return "hit"
@@ -26,7 +26,7 @@ export default class Basic {
     return "hit";
   }
 
-  overEight() {
+  nineTen(total, upVal) {
     if (total === 9) {
       if (upVal > 2 && upVal < 7) return "double";
       return "hit"
@@ -36,8 +36,8 @@ export default class Basic {
     return "hit";
   }
 
-  doubleOrAct(min, max, defAct){
-    if (upVal >= min && upVal < max) {
+  doubleOrAct(min, max, defAct, upVal){
+    if (upVal >= min && upVal <= max) {
       if (this.firstAct) return "double";
       return defAct;
     }
@@ -67,26 +67,27 @@ export default class Basic {
     if (total === 6 || total === 4) return this.splitOrHold(7, upVal);
   }
 
-  actionAce(total){
+  actionAce(total, upVal){
     if (total === 20) return "stand";
-    if (total === 19) return this.doubleOrAct(6, 7, "stand")
-    if (total === 18) return this.doubleOrAct(2, 7, "stand");
-    if (total === 17) return this.doubleOrAct(3, 7, "hit");
-    if (total === 16 || total === 15) return this.doubleOrAct(4, 7, "hit");
-    if (total === 14 || total === 13) return this.doubleOrAct(5, 7, "hit");
+    if (total === 19) return this.doubleOrAct(6, 6, "stand", upVal)
+    if (total === 18 && (upVal === 7 || upVal === 8)) return this.doubleOrAct(2, 6, "stand", upVal);
+    if (total === 18) return this.doubleOrAct(2, 6, "stand", upVal);
+    if (total === 17) return this.doubleOrAct(3, 6, "hit", upVal);
+    if (total === 16 || total === 15) return this.doubleOrAct(4, 6, "hit", upVal);
+    if (total === 14 || total === 13) return this.doubleOrAct(5, 6, "hit", upVal);
   }
 
   actionElse(total, upVal){
     if (total > 16) return "stand";
-    if (total > 12) return this.overEleven(upVal)
-    if (total === 11 && this.firstAct) return "double";
-    if (total > 8) return this.overEight();
+    if (total > 12) return this.overEleven(total, upVal)
+    if (total === 11) return this.firstAct ? "double" : "hit";
+    if (total > 8) return this.nineTen(total, upVal);
     if (total <= 8) return "hit";
   }
 
   nextAction(total, ace, pair, upVal){
-    if (pair) return this.actionPair(total, upVal);
-    if (ace) return this.actionAce(total);
+    // if (pair) return this.actionPair(total, upVal);
+    if (ace) return this.actionAce(total, upVal);
 
     return this.actionElse(total, upVal);
   }

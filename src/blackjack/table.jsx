@@ -8,11 +8,11 @@ import Calc from './cardCalc';
 export default class Table extends React.Component {
   constructor(props){
     super(props);
-    this.newHand();
-    this.state = {};
+    this.state = {aiMode: true};
 
     this.hitPlayer = this.hitPlayer.bind(this);
     this.stand = this.stand.bind(this);
+    this.aiHand = this.aiHand.bind(this);
     this.newHand = this.newHand.bind(this);
   }
 
@@ -66,12 +66,16 @@ export default class Table extends React.Component {
   showTotal(){
     this.setState({showTotal: true});
   }
-  
-  stand(){
+
+  resolveDealer(){
     this.revealHand();
     this.showTotal();
     this.resolveHand();
-    this.setState({resolve: true});
+    this.setState({ resolve: true });
+  }
+  
+  stand(){
+    this.resolveDealer();
   }
   
   dealBoard(deck){
@@ -86,10 +90,33 @@ export default class Table extends React.Component {
     return cards.some(card => card.rank === "A");
   }
 
+  aiHand() {
+    let cards = this.state.playerCards[0];
+    let basic = new Basic(cards, true);
+    let upcard = this.state.boardCards[1].rank;
+    let action = basic.resolveHand(upcard);
+
+    if (action === "double") {
+      cards.push(this.state.deck.draw(true));
+    } else if (action === "split") {
+      // split action
+    } else {
+      if (action !== "hold") basic.firstAct = false;
+      while (action != "stand") {
+        cards.push(this.state.deck.draw(true));
+        action = basic.resolveHand(upcard);
+      }
+    }
+
+    this.setState({playersCards: cards});
+    this.resolveDealer();
+  }
+
   resolveHand() {
     let cards = this.state.boardCards;
     let total = Calc.handTotal(cards)
     let ace = this.hasAce(cards);
+
 
     while (total < 17 || total === 17 && ace) {
       const card = this.state.deck.draw(true);
@@ -129,6 +156,7 @@ export default class Table extends React.Component {
         <div className="buttons">
           <button className="btn" onClick={this.hitPlayer}>HIT</button>
           <button className="btn" onClick={this.stand}>STAND</button>
+          <button className="btn" onClick={this.aiHand}>BASIC</button>
           <button className="btn" onClick={this.newHand}>NEW GAME</button>
         </div>
       )

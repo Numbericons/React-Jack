@@ -3,8 +3,12 @@ export default class Calc {
   constructor() {
   }
 
+  static isPair(cards) {
+    return cards[0].rank === cards[1].rank;
+  }
+
   static hasAce(cards) {
-    return cards.some(card=> card.rank = "A");
+    return cards.some(card=> card.rank === "A");
   }
 
   static handTotal(cards) {
