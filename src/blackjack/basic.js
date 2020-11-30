@@ -9,6 +9,8 @@ export default class Basic {
   //upcard is the value of the dealers card
   resolveHand(upcard){
     const total = Calc.handTotal(this.cards);
+    if (total > 21) return 'busted';
+    
     const ace = Calc.hasAce(this.cards);
     const pair = Calc.isPair(this.cards);
     const upVal = Calc.strVal(upcard);

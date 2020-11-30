@@ -102,8 +102,9 @@ export default class Table extends React.Component {
       // split action
     } else {
       if (action !== "hold") basic.firstAct = false;
-      while (action != "stand") {
+      while (action != "stand" && action != "busted") {
         cards.push(this.state.deck.draw(true));
+        basic.cards = cards;
         action = basic.resolveHand(upcard);
       }
     }
