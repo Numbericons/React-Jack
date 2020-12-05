@@ -12,6 +12,7 @@ export default class Table extends React.Component {
     this.bet = 500;
 
     this.hitPlayer = this.hitPlayer.bind(this);
+    this.double = this.double.bind(this);
     this.stand = this.stand.bind(this);
     this.aiHand = this.aiHand.bind(this);
     this.newHand = this.newHand.bind(this);
@@ -66,6 +67,15 @@ export default class Table extends React.Component {
     arr[this.state.currentPlayer].push(this.state.deck.draw(true));
 
     this.setState({ playersCards: arr});
+  }
+
+  double(){
+    let stack = this.state.playerStacks[this.state.currentPlayer];
+    stack[0] -= this.bet;
+    stack[stack.length - 1] += this.bet;
+
+    this.hitPlayer();
+    this.resolveDealer();
   }
 
   revealHand(){
@@ -181,6 +191,7 @@ export default class Table extends React.Component {
       return (
         <div className="buttons">
           <button className="btn" onClick={this.hitPlayer}>HIT</button>
+          <button className="btn" onClick={this.double}>DOUBLE</button>
           <button className="btn" onClick={this.stand}>STAND</button>
           <button className="btn" onClick={this.aiHand}>BASIC</button>
           <button className="btn" onClick={this.newHand}>NEW GAME</button>
