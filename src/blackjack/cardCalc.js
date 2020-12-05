@@ -1,8 +1,5 @@
 // class CardCalc {
 export default class Calc {
-  constructor() {
-  }
-
   static isPair(cards) {
     return cards[0].rank === cards[1].rank;
   }
@@ -45,19 +42,32 @@ export default class Calc {
     return val1 > val2 ? "hand1" : "hand2";
   }
 
+  static handResults(boardVal, playerVals) {
+    let arr = [];
+    for (let k = 0; k < playerVals.length; k++) {
+      if (playerVals[k] > 21) {
+        arr.unshift('hand1')
+        continue;
+      }
+      if (boardVal > 21) {
+        arr.unshift('hand2')
+        continue;
+      }
+
+      arr.unshift(Calc.handResult(boardVal, playerVals[k]));
+    }
+
+    return arr;
+  }
+
   static compareHands(playerHands, board) {
     const boardVal = Calc.handTotal(board);
     let playerVals = [];
 
     for (let i = 0; i < playerHands.length;i++){  
       playerVals.push(Calc.handTotal(playerHands[i]));
-    
     }
 
-    for (let k = 0; k < playerVals.length;k++){
-      playerVals[k] = Calc.handResult(boardVal,playerVals[k]);
-    }
-
-    return playerVals;
+    return Calc.handResults(boardVal, playerVals);
   }
 }

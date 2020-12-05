@@ -1,12 +1,6 @@
-import { render } from '@testing-library/react';
-import React from 'react';
 import Player from './player';
 
 export default class Dealer extends Player {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const cards = this.cardArray(this.props.cards);
     const showTotal = this.props.revealed ? this.props.total : "";

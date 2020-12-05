@@ -32,7 +32,7 @@ export default class Player extends React.Component {
         </div>
         <div className='hand-val'>
           <div className='hand-val-txt'>{this.props.total}{showBust}</div>
-          <div className='hand-val-txt'>Stack: ${this.props.stack}</div>
+          <div className='hand-val-txt'>Stack: ${this.props.stack[0]}</div>
         </div>
       </div>
     )

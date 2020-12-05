@@ -9,6 +9,7 @@ export default class Table extends React.Component {
   constructor(props){
     super(props);
     this.state = {aiMode: true};
+    this.bet = 500;
 
     this.hitPlayer = this.hitPlayer.bind(this);
     this.stand = this.stand.bind(this);
@@ -18,17 +19,18 @@ export default class Table extends React.Component {
 
   takeBets(stacks){
     for (let i=0; i<stacks.length; i++) {
-      stacks[i] = stacks[i] - this.state.bet;
-      stacks.push(this.state.bet);
+      stacks[i][0] = stacks[i][0] - this.bet;
+      stacks[i].push(this.bet);
     }
+    this.setState({playerStacks: stacks});
   }
 
   newHand(){
     let deck = new Deck();
     const boardArr = this.dealBoard(deck);
     const playerArr = this.playerArr(deck);
-    
-    const stacks = this.takeBets(this.playerStacks());
+    let stacks = this.state.playerStacks || this.playerStacks();
+    stacks = this.takeBets(stacks);
 
     this.setState({
       deck: deck,
@@ -53,7 +55,7 @@ export default class Table extends React.Component {
   playerStacks(){
     let arr = [];
     for (let i = 0; i < 1; i++) { arr.push([]) };
-    for (let j = 0; j < 1; j++) { arr[j].push(1000) };
+    for (let j = 0; j < 1; j++) { arr[j].push(10000) };
     return arr;
   }
 
@@ -77,12 +79,14 @@ export default class Table extends React.Component {
   }
 
   payBets() {
-    debugger;
     const resultsArr = Calc.compareHands(this.state.playerCards, this.state.boardCards);
     let stacks = this.state.playerStacks;
-    
-    for (let i = 0; i < resultsArr.length; i++){
 
+    for (let i = resultsArr.length; i > 0; i--){
+      const result = resultsArr.pop();
+      const bet = stacks[0].pop();
+      if (result === "hand1") continue;
+      stacks[0][0] += result === "hand2" ? bet * 2 : bet;
     }
 
     this.setState({playerStacks: stacks});
@@ -121,11 +125,9 @@ export default class Table extends React.Component {
     if (action === "double") {
       cards.push(this.state.deck.draw(true));
     } else if (action === "split") {
-      // let card = cards
-      // split action
     } else {
       if (action !== "hold") basic.firstAct = false;
-      while (action != "stand" && action != "busted") {
+      while (action !== "stand" && action !== "busted") {
         cards.push(this.state.deck.draw(true));
         basic.cards = cards;
         action = basic.resolveHand(upcard);
@@ -142,7 +144,7 @@ export default class Table extends React.Component {
     let ace = this.hasAce(cards);
 
 
-    while (total < 17 || total === 17 && ace) {
+    while (total < 17 || (total === 17 && ace)) {
       const card = this.state.deck.draw(true);
       cards.push(card);
       total = Calc.handTotal(cards);
@@ -159,7 +161,7 @@ export default class Table extends React.Component {
   }
 
   showPlayers(){
-    const stacks = this.state.stacks;
+    const stacks = this.state.playerStacks;
     let playerArr = this.state.playerCards.map((cards, i) => {
       const handTotal = Calc.handTotal(cards);
       
