@@ -16,18 +16,27 @@ export default class Table extends React.Component {
     this.newHand = this.newHand.bind(this);
   }
 
+  takeBets(stacks){
+    for (let i=0; i<stacks.length; i++) {
+      stacks[i] = stacks[i] - this.state.bet;
+      stacks.push(this.state.bet);
+    }
+  }
+
   newHand(){
     let deck = new Deck();
     const boardArr = this.dealBoard(deck);
     const playerArr = this.playerArr(deck);
-    const stacks = this.playerStacks();
     
+    const stacks = this.takeBets(this.playerStacks());
+
     this.setState({
       deck: deck,
       boardCards: boardArr,
       playerCards: playerArr,
       stacks: stacks,
       showTotal: false,
+      bet: 500,
       resolve: false,
       currentPlayer: playerArr.length - 1
     })
@@ -67,10 +76,23 @@ export default class Table extends React.Component {
     this.setState({showTotal: true});
   }
 
+  payBets() {
+    debugger;
+    const resultsArr = Calc.compareHands(this.state.playerCards, this.state.boardCards);
+    let stacks = this.state.playerStacks;
+    
+    for (let i = 0; i < resultsArr.length; i++){
+
+    }
+
+    this.setState({playerStacks: stacks});
+  }
+
   resolveDealer(){
     this.revealHand();
     this.showTotal();
     this.resolveHand();
+    this.payBets();
     this.setState({ resolve: true });
   }
   
@@ -99,6 +121,7 @@ export default class Table extends React.Component {
     if (action === "double") {
       cards.push(this.state.deck.draw(true));
     } else if (action === "split") {
+      // let card = cards
       // split action
     } else {
       if (action !== "hold") basic.firstAct = false;

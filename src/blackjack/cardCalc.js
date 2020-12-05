@@ -39,4 +39,25 @@ export default class Calc {
     if (tens.includes(str)) return 10;
     return parseInt(str);
   }
+
+  static handResult(val1, val2){
+    if (val1 === val2) return "tie";
+    return val1 > val2 ? "hand1" : "hand2";
+  }
+
+  static compareHands(playerHands, board) {
+    const boardVal = Calc.handTotal(board);
+    let playerVals = [];
+
+    for (let i = 0; i < playerHands.length;i++){  
+      playerVals.push(Calc.handTotal(playerHands[i]));
+    
+    }
+
+    for (let k = 0; k < playerVals.length;k++){
+      playerVals[k] = Calc.handResult(boardVal,playerVals[k]);
+    }
+
+    return playerVals;
+  }
 }
