@@ -12,6 +12,7 @@ export default class Table extends React.Component {
     this.bet = 500;
 
     this.hitPlayer = this.hitPlayer.bind(this);
+    this.split = this.split.bind(this);
     this.double = this.double.bind(this);
     this.stand = this.stand.bind(this);
     this.aiHand = this.aiHand.bind(this);
@@ -180,33 +181,60 @@ export default class Table extends React.Component {
     return playerArr;
   }
 
+  split(){
+    //current players last element of hand array
+    let deck = this.state.deck;
+    let pCards = this.state.playerCards;
+    debugger;
+    let card = pCards[pCards.length - 1].pop();
+    pCards[pCards.length - 1].push(deck.draw(true));
+    pCards.push([card, deck.draw(true)]);
+    
+    this.setState({deck: deck, playerCards: pCards});
+  }
+  
   playBtns(players) {
+    let currHand = this.state.playerCards[this.state.playerCards.length - 1];
+    const split = <button className="btn" onClick={this.split}>SPLIT</button>;
+    // const split = Calc.cardVal(currHand[0]) === Calc.cardVal(currHand[1]) ? <button className="btn" onClick={this.split}>SPLIT</button> : "";
+
+    // if (players[this.state.currentPlayer].props.total === 21)
+
     if (this.state.resolve || players[this.state.currentPlayer].props.total > 20) {
-      return (
-        <div className="reset">
-          <button className="btn" onClick={this.newHand}>NEW GAME</button>
-        </div>
-      )
+      return this.resetRender();
     } else {
       return (
         <div className="buttons">
           <button className="btn" onClick={this.hitPlayer}>HIT</button>
           <button className="btn" onClick={this.double}>DOUBLE</button>
           <button className="btn" onClick={this.stand}>STAND</button>
+          {split}
           <button className="btn" onClick={this.aiHand}>BASIC</button>
-          <button className="btn" onClick={this.newHand}>NEW GAME</button>
+          <button className="btn" onClick={this.newHand}>NEW</button>
         </div>
       )
     }
   }
 
-  btnInterface(players) {
-    if (players) return this.playBtns(players);
+  resetRender(){
+    return (
+      <div className="reset">
+        <button className="btn" onClick={this.newHand}>NEW GAME</button>
+      </div>
+    )
+  }
+
+  newRender(){
     return (
       <div className="new">
         <button className="new-btn" onClick={this.newHand}>NEW GAME</button>
       </div>
     )
+  }
+
+  btnInterface(players) {
+    if (players) return this.playBtns(players);
+    return this.newRender();
   }
 
   render(){
